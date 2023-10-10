@@ -8,12 +8,12 @@ function Courses() {
   useEffect(() => {
     async function fetchCourses() {
       try {
-        const response = await fetch('http://localhost:8080/courses'); 
+        const response = await fetch('http://localhost:8080/courses');
         if (!response.ok) {
           throw new Error('Failed to fetch courses');
         }
         const data = await response.json();
-        setCourseData(data);
+        setCourseData(data); 
       } catch (error) {
         console.error('Error fetching courses:', error);
       }

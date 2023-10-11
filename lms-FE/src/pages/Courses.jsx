@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import CourseList from "../components/CourseList";
+import { fetchCourses } from '../APIs/apiCourseService';
 
 function Courses() {
   const [courseData, setCourseData] = useState([]);
 
   useEffect(() => {
-    async function fetchCourses() {
+    async function fetchData() {
       try {
-        const response = await fetch('http://localhost:8080/courses');
-        if (!response.ok) {
-          throw new Error('Failed to fetch courses');
-        }
-        const data = await response.json();
-        setCourseData(data); 
+        const courses = await fetchCourses();
+        const transformedData = courses.map((course) => ({
+          id: course.id,
+          title: course.courseName,
+        }));
+        setCourseData(transformedData);
       } catch (error) {
         console.error('Error fetching courses:', error);
       }
     }
 
-    fetchCourses();
+    fetchData();
   }, []);
 
   return (

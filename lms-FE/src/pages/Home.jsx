@@ -3,7 +3,6 @@ import React from 'react';
 function Home() {
   return (
     <div>
-      {/* HTML content here */}
       <div className="lms-header">
         <h1>Learning Management System</h1>
       </div>

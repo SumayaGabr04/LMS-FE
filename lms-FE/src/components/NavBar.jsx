@@ -9,6 +9,7 @@ function NavBar() {
     { id: 2, path: "/courses", text: "Courses" },
     { id: 3, path: "/schedule", text: "Schedule" },
     { id: 4, path: "/login", text: "Login" },
+    { id: 5, path: "/create-course", text: "Create Course" },
   ];
 
   return (

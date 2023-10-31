@@ -130,8 +130,8 @@
   .login-form button:hover {
     background-color: #45a049;
   }
-  
-  /* Calendar Styling */
+/*   
+  /* Calendar Styling 
   .calendar-container {
     background-color: #fff;
     border-radius: 8px;
@@ -185,7 +185,8 @@
   
   .date:last-child {
     border-right: none;
-  }
+  } */
+  
   
   /* courses items */
   .courses-container {
@@ -208,7 +209,9 @@
     transform: scale(1.05);
   }
   
-  .view-button {
+  .course .view-button,
+.course .update-button,
+.course .delete-button {
     display: none;
     margin-top: 10px;
     background-color: #007bff;
@@ -219,7 +222,9 @@
     cursor: pointer;
   }
   
-  .course:hover .view-button {
+  .course:hover .view-button,
+  .course:hover .update-button,
+  .course:hover .delete-button {
     display: block;
   }
   
@@ -231,3 +236,109 @@
         text-align: left;
     }
   }
+
+  /* Error.css */
+.error {
+  background-color: #ffcccc;
+  border: 1px solid #ff0000;
+  color: #ff0000;
+  padding: 10px;
+  text-align: center;
+  margin: 10px;
+}
+
+
+/* Create Course Form */
+.create-course-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.create-course-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.create-course-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.create-course-form input[type="text"],
+.create-course-form textarea,
+.create-course-form input[type="number"],
+.create-course-form input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.create-course-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.create-course-form button:hover {
+  background-color: #45a049;
+}
+
+.update-course-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+/* Style form labels */
+.update-course-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Style text input and text area fields */
+.update-course-form input[type="text"],
+.update-course-form input[type="number"],
+.update-course-form input[type="date"],
+.update-course-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Style the submit button */
+.update-course-form button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Style success and error messages */
+.error {
+  color: #ff0000;
+  margin: 10px 0;
+}
+
+.success {
+  color: #00cc00;
+  margin: 10px 0;
+}

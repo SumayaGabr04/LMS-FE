@@ -12,7 +12,12 @@ function CourseList(props) {
   return (
     <div id="courses-list" className="courses-container">
       {props.courses.map((course) => (
-        <CourseItem key={course.id} course={course} />
+        <CourseItem 
+        key={course.id} 
+        course={course} 
+        onDeleteClick={props.onDeleteClick}
+        onUpdateClick={props.onUpdateClick}
+        />
       ))}
     </div>
   );

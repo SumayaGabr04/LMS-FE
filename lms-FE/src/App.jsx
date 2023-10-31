@@ -5,11 +5,14 @@ import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Courses from './pages/Courses';
-import Schedule from './pages/Schedule';
+import Schedule from './pages/Schedule';  
 import Login from './pages/Login';
 import CourseDetails from './pages/CourseDetails';
+import CreateCourse from './pages/CreateCoursePage';
+import UpdateCourse from './pages/UpdateCourse';
 
 function App() {
+
   return (
     <div className="App">
       <Router>
@@ -20,6 +23,8 @@ function App() {
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/login" element={<Login />} />
           <Route path="/courses/:id" element={<CourseDetails />} />
+          <Route path="/create-course" element={<CreateCourse />} />
+          <Route path="/update-course/:id" element={<UpdateCourse />} />
         </Routes>
         <Footer />
       </Router>

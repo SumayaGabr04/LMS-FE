@@ -1,4 +1,5 @@
 import axios from 'axios';
+import ErrorHandlingService from '../components/errorHandling/ErrorHandlingService';
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -11,7 +12,7 @@ export const fetchCourses = async () => {
     }
     throw new Error('Failed to fetch courses');
   } catch (error) {
-    throw new Error(`Error fetching courses: ${error.message}`);
+    throw new Error(ErrorHandlingService.handleError(error));
   }
 };
 
@@ -24,6 +25,49 @@ export const fetchCourseDetails = async (courseId) => {
     }
     throw new Error('Failed to fetch course details');
   } catch (error) {
-    throw new Error(`Error fetching course details: ${error.message}`);
+    throw new Error(ErrorHandlingService.handleError(error));
   }
 };
+
+// Function to create a course
+export const createCourse = async (courseData) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/courses`, courseData);
+    if (response.status === 201) {
+      return { status: 'success' };
+    }
+    // Handle server response errors
+    return ErrorHandlingService.handleError(new Error('Failed to create the course'));
+  } catch (error) {
+    // Handle network or unexpected errors
+    return ErrorHandlingService.handleError(error);
+  }
+};
+
+// Function to update a course
+export const updateCourse = async (courseId, courseData) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/courses/${courseId}`, courseData);
+    if (response.status === 204) {
+      return { status: 'success' };
+    }
+    throw new Error('Failed to update the course');
+  } catch (error) {
+    throw new Error(ErrorHandlingService.handleError(error));
+  }
+};
+
+// Function to delete a course
+export const deleteCourse = async (courseId) => {
+  try {
+    const response = await axios.delete(`${BASE_URL}/courses/${courseId}`);
+    if (response.status === 204) {
+      return { status: 'success' };
+    } else {
+      throw new Error(`Failed to delete the course. Status code: ${response.status}`);
+    }
+  } catch (error) {
+    throw new Error(ErrorHandlingService.handleError(error));
+  }
+};
+

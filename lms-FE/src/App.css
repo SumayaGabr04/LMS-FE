@@ -211,7 +211,8 @@
   
   .course .view-button,
 .course .update-button,
-.course .delete-button {
+.course .delete-button,
+.course .enroll-button {
     display: none;
     margin-top: 10px;
     background-color: #007bff;
@@ -224,7 +225,8 @@
   
   .course:hover .view-button,
   .course:hover .update-button,
-  .course:hover .delete-button {
+  .course:hover .delete-button,
+  .course:hover .enroll-button{
     display: block;
   }
   

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 import CourseList from '../components/CourseList';
 import { fetchCourses, deleteCourse, updateCourse } from '../APIs/apiCourseService';
-
+//courses page
 function Courses() {
   const [courseData, setCourseData] = useState([]);
   const navigate = useNavigate(); // Get the navigation function using useNavigate

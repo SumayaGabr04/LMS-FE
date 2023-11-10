@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import CourseDetails from './pages/CourseDetails';
 import CreateCourse from './pages/CreateCoursePage';
 import UpdateCourse from './pages/UpdateCourse';
+import EnrollCourse from './pages/EnrollPage';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/courses/:id" element={<CourseDetails />} />
           <Route path="/create-course" element={<CreateCourse />} />
           <Route path="/update-course/:id" element={<UpdateCourse />} />
+          <Route path="/enroll-course" element={<EnrollCourse />} />
         </Routes>
         <Footer />
       </Router>

@@ -19,6 +19,15 @@ function CourseItem({ course, onUpdateClick, onDeleteClick }) {
     }
   };
 
+  const handleEnrollCourse = () => {
+    const confirmed = window.confirm('Are you sure you want to enroll in this course?');
+    if (confirmed) {
+      // Replace this with your actual enrollment logic
+      // Once the user confirms enrollment, you can redirect them to the enrollment page
+      navigate(`/enroll-course`);
+    }
+  };
+
   return (
     <div className="course">
       <h2>{course.title}</h2>
@@ -30,6 +39,9 @@ function CourseItem({ course, onUpdateClick, onDeleteClick }) {
       </button>
       <button className="delete-button" onClick={handleDeleteCourse}>
         Delete
+      </button>
+      <button className="enroll-button" onClick={handleEnrollCourse}>
+        Enroll
       </button>
     </div>
   );

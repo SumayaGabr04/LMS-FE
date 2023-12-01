@@ -1,14 +1,15 @@
 import axios from 'axios';
 import ErrorHandlingService from '../components/errorHandling/ErrorHandlingService';
+import createAuthorizedInstance from './createAuthorizedInstance';
 
 const BASE_URL = 'http://localhost:8080';
 
 // Function to fetch courses
 export const fetchCourses = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/courses`);
+    const response = await createAuthorizedInstance().get('/courses');
     if (response.status === 200) {
-      return response.data.courses; 
+      return response.data.courses;
     }
     throw new Error('Failed to fetch courses');
   } catch (error) {
@@ -19,9 +20,9 @@ export const fetchCourses = async () => {
 // Function to fetch course details by ID
 export const fetchCourseDetails = async (courseId) => {
   try {
-    const response = await axios.get(`${BASE_URL}/courses/${courseId}`);
+    const response = await createAuthorizedInstance().get(`/courses/${courseId}`);
     if (response.status === 200) {
-      return response.data; 
+      return response.data;
     }
     throw new Error('Failed to fetch course details');
   } catch (error) {
@@ -32,7 +33,7 @@ export const fetchCourseDetails = async (courseId) => {
 // Function to create a course
 export const createCourse = async (courseData) => {
   try {
-    const response = await axios.post(`${BASE_URL}/courses`, courseData);
+    const response = await createAuthorizedInstance().post('/courses', courseData);
     if (response.status === 201) {
       return { status: 'success' };
     }
@@ -47,7 +48,7 @@ export const createCourse = async (courseData) => {
 // Function to update a course
 export const updateCourse = async (courseId, courseData) => {
   try {
-    const response = await axios.put(`${BASE_URL}/courses/${courseId}`, courseData);
+    const response = await createAuthorizedInstance().put(`/courses/${courseId}`, courseData);
     if (response.status === 204) {
       return { status: 'success' };
     }
@@ -60,7 +61,7 @@ export const updateCourse = async (courseId, courseData) => {
 // Function to delete a course
 export const deleteCourse = async (courseId) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/courses/${courseId}`);
+    const response = await createAuthorizedInstance().delete(`/courses/${courseId}`);
     if (response.status === 204) {
       return { status: 'success' };
     } else {
@@ -70,4 +71,3 @@ export const deleteCourse = async (courseId) => {
     throw new Error(ErrorHandlingService.handleError(error));
   }
 };
-

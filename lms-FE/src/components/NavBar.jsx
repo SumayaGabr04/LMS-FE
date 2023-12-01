@@ -48,7 +48,7 @@ function NavBar() {
             ))}
           </ul>
         </div>
-        <a href="#" className="ml-auto text-light">
+        <a href="/profile" className="ml-auto text-light">
           Profile
         </a>
       </nav>

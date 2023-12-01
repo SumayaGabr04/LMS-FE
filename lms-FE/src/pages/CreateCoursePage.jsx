@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createCourse } from '../APIs/apiCourseService';
+import Error from '../components/errorHandling/Error';
 
 function CreateCourse() {
   const [courseData, setCourseData] = useState({
@@ -19,11 +20,12 @@ function CreateCourse() {
     setCourseData({ ...courseData, [name]: value });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await createCourse(courseData);
+      console.log('Response from backend:', response);
+  
       if (response.status === 'success') {
         // Handle success
         setSuccess(true);
@@ -32,10 +34,14 @@ function CreateCourse() {
         setTimeout(() => {
           setSuccess(false);
         }, 3000);
-      } else {
+      } else if (response.errorMessages && response.errorMessages.length > 0) {
         // Handle server response errors
         setSuccess(false);
-        setError('Failed to create the course. Please check your data.');
+        setError(response.errorMessages.join('. '));
+      } else {
+        // Handle unexpected response
+        setSuccess(false);
+        setError('Unexpected response from the server.');
       }
     } catch (error) {
       // Handle network or unexpected errors
@@ -43,13 +49,13 @@ function CreateCourse() {
       setError('An error occurred while creating the course: ' + error.message);
       console.error('Error creating the course:', error);
     }
-  };  
-
+  };
+  
   return (
     <div>
       <h2>Create a New Course</h2>
-      {error && <div className="error">{error}</div>}
-      {success && <div className="success">Course created successfully!</div>}
+      {error && <Error error={error} />}
+      {/* {success && <div className="success">Course created successfully!</div>} */}
       <form onSubmit={handleSubmit} className="create-course-form">
         <div>
           <label>Course Name:</label>

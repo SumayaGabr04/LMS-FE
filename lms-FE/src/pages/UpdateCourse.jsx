@@ -12,6 +12,8 @@ function UpdateCourse() {
     enrollmentCapacity: 0,
     startDate: '',
     endDate: '',
+    enrolledStudents: [],
+    courseMaterials: [],
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -43,7 +45,7 @@ function UpdateCourse() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await updateCourse(courseId, courseData);
+      const response = await updateCourse(id, courseData);
       if (response.status === 'success') {
         setSuccess(true);
         setError(null);
@@ -118,6 +120,30 @@ function UpdateCourse() {
             onChange={handleChange}
           />
         </div>
+    {/* Display enrolled students */}
+    {courseData.enrolledStudents && (
+      <div>
+        <h2>Enrolled Students:</h2>
+        <ul>
+          {courseData.enrolledStudents.map(student => (
+            <li key={student.id}>{student.name}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {/* Display course materials */}
+    {courseData.courseMaterials && (
+      <div>
+        <h2>Course Materials:</h2>
+        <ul>
+          {courseData.courseMaterials.map(material => (
+            <li key={material.id}>{material.material}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+
         <button type="submit">Update Course</button>
       </form>
     </div>

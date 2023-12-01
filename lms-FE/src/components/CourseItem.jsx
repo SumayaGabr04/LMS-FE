@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import AccessTokenProvider from './AccessTokenProvider';
 
-function CourseItem({ course, onUpdateClick, onDeleteClick }) {
+function CourseItem({ course, onUpdateClick, onDeleteClick, claims }) {
   const navigate = useNavigate();
 
   const handleViewCourse = () => {
@@ -20,13 +21,19 @@ function CourseItem({ course, onUpdateClick, onDeleteClick }) {
   };
 
   const handleEnrollCourse = () => {
-    const confirmed = window.confirm('Are you sure you want to enroll in this course?');
-    if (confirmed) {
-      // Replace this with your actual enrollment logic
-      // Once the user confirms enrollment, you can redirect them to the enrollment page
-      navigate(`/enroll-course`);
+    const userId = AccessTokenProvider.getUserId();
+  
+    if (userId) {
+      const confirmed = window.confirm('Are you sure you want to enroll in this course?');
+      if (confirmed) {
+        navigate(`/enroll-course/${userId}/${course.id}`);
+      }
+    } else {
+      console.error('User ID is missing');
     }
   };
+  
+  
 
   return (
     <div className="course">

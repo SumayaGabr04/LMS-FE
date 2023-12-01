@@ -1,29 +1,61 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import React, { useState, useEffect } from 'react'; 
+import LoginForm from '../components/LoginForm';
+
+import AccessTokenProvider from '../components/AccessTokenProvider';
+import apiAuth from '../APIs/apiAuth';
+
+import '/src/App.css';
+
+
 
 function Login() {
+  const navigate = useNavigate();
+  const [claims, setClaims] = useState(AccessTokenProvider.getClaims());
+
+ const handleLogin = (username, password) => {
+  console.log("Attempting login with:", username, password);
+
+  apiAuth.login(username, password)
+  .then(claims => {
+    console.log("Login successful. Claims:", claims);
+    setClaims(claims);
+    navigate('/');
+  })
+  .catch(error => {
+    console.error("Login failed:", error);
+    alert("Login failed!");
+  });
+}
+
+  const handleLogout = () => {
+    AccessTokenProvider.clear();
+    setClaims(null);
+  }
+
+  useEffect(() => {
+  }, [claims]);
+
   return (
-    <div>
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <div className="login-form">
-              <h2>Login</h2>
-              <form method="post">
-                <div className="form-group">
-                  <label htmlFor="email">Email:</label>
-                  <input type="text" className="form-control" id="email" name="email" required />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="password">Password:</label>
-                  <input type="password" className="form-control" id="password" name="password" required />
-                </div>
-                <button type="submit" className="btn btn-primary">Login</button>
-              </form>
-            </div>
-          </div>
+    <>
+
+      <div>
+      <h1>My App</h1>
+      {claims ? (
+        <div>
+          <p>Welcome, {claims.sub}</p>
+
+          <button onClick={handleLogout}>Logout</button>
+          <br />
+          <a href='/' target='_blank'>Open in new Tab</a>
         </div>
-      </div>
+      ) : (
+        <LoginForm onLogin={handleLogin} />
+      )}
     </div>
+
+    </>
   );
 }
 

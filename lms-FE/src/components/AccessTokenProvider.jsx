@@ -11,13 +11,17 @@ export const AccessTokenProvider = {
     setAccessToken: (token) => {
         sessionStorage.setItem("accessToken", token);
         const claims = jwtDecode(token);
-        sessionStorage.setItem("claims", JSON.stringify(claims));
+        sessionStorage.setItem("claims", JSON.stringify(claims));   
         return claims;
     },
     getUserId: () => {
         const claims = AccessTokenProvider.getClaims();
         return claims ? claims.userId : null;
     },
+    getUserRole: () => {
+        const claims = AccessTokenProvider.getClaims();
+        return claims ? claims.roles : null;
+      },
     clear: () => {
         sessionStorage.removeItem("accessToken");
         sessionStorage.removeItem("claims");

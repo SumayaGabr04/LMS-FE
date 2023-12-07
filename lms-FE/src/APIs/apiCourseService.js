@@ -4,13 +4,33 @@ import createAuthorizedInstance from './createAuthorizedInstance';
 
 const BASE_URL = 'http://localhost:8080';
 
-// Function to fetch courses
-export const fetchCourses = async () => {
+// // Function to fetch courses
+// export const fetchCourses = async () => {
+//   try {
+//     const response = await createAuthorizedInstance().get('/courses');
+//     if (response.status === 200) {
+//       return response.data.courses;
+//     }
+//     throw new Error('Failed to fetch courses');
+//   } catch (error) {
+//     throw new Error(ErrorHandlingService.handleError(error));
+//   }
+// };
+
+
+// Function to fetch courses with optional search term
+export const fetchCourses = async (searchTerm = '') => {
   try {
-    const response = await createAuthorizedInstance().get('/courses');
+    const url = searchTerm
+      ? `/courses/search?searchTerm=${encodeURIComponent(searchTerm)}`
+      : '/courses';
+
+    const response = await createAuthorizedInstance().get(url);
+
     if (response.status === 200) {
       return response.data.courses;
     }
+
     throw new Error('Failed to fetch courses');
   } catch (error) {
     throw new Error(ErrorHandlingService.handleError(error));

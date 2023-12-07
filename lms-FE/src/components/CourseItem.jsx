@@ -22,7 +22,7 @@ function CourseItem({ course, onUpdateClick, onDeleteClick, claims }) {
 
   const handleEnrollCourse = () => {
     const userId = AccessTokenProvider.getUserId();
-  
+
     if (userId) {
       const confirmed = window.confirm('Are you sure you want to enroll in this course?');
       if (confirmed) {
@@ -32,8 +32,8 @@ function CourseItem({ course, onUpdateClick, onDeleteClick, claims }) {
       console.error('User ID is missing');
     }
   };
-  
-  
+
+  const userRole = AccessTokenProvider.getUserRole();
 
   return (
     <div className="course">
@@ -41,15 +41,21 @@ function CourseItem({ course, onUpdateClick, onDeleteClick, claims }) {
       <button className="view-button" onClick={handleViewCourse}>
         View Course
       </button>
-      <button className="update-button" onClick={handleUpdateCourse}>
-        Update
-      </button>
-      <button className="delete-button" onClick={handleDeleteCourse}>
-        Delete
-      </button>
-      <button className="enroll-button" onClick={handleEnrollCourse}>
-        Enroll
-      </button>
+      {userRole.includes('ADMIN') && (
+        <>
+          <button className="update-button" onClick={handleUpdateCourse}>
+            Update
+          </button>
+          <button className="delete-button" onClick={handleDeleteCourse}>
+            Delete
+          </button>
+        </>
+      )}
+      {userRole.includes('STUDENT') && (
+        <button className="enroll-button" onClick={handleEnrollCourse}>
+          Enroll
+        </button>
+      )}
     </div>
   );
 }

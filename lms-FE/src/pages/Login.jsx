@@ -15,7 +15,6 @@ function Login() {
   const [claims, setClaims] = useState(AccessTokenProvider.getClaims());
 
  const handleLogin = (username, password) => {
-  console.log("Attempting login with:", username, password);
 
   apiAuth.login(username, password)
   .then(claims => {

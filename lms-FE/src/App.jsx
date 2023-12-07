@@ -13,6 +13,7 @@ import CreateCourse from './pages/CreateCoursePage';
 import UpdateCourse from './pages/UpdateCourse';
 import EnrollCourse from './pages/EnrollPage';
 import ProfilePage from './pages/ProfilePage';
+import ChatPage from './pages/ChatPage';
 
 function App() {
   return (
@@ -22,15 +23,16 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
-            <Route path="/schedule" element={<Schedule />} />
+            {/* <Route path="/schedule" element={<Schedule />} /> */}
             <Route path="/courses/:id" element={<CourseDetails />} />
             <Route path="/create-course" element={<CreateCourse />} />
             <Route path="/update-course/:id" element={<UpdateCourse />} />
             <Route path="/enroll-course/:id/:courseId" element={<EnrollCourse />} />
+            <Route path="/chat" element={<ChatPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Routes>
-          <Footer />
+          {/* <Footer /> */}
         </Router>
       </div>
   );

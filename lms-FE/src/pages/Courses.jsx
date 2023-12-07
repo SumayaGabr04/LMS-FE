@@ -6,7 +6,8 @@ import { fetchCourses, deleteCourse, updateCourse } from '../APIs/apiCourseServi
 //courses page
 function Courses() {
   const [courseData, setCourseData] = useState([]);
-  const navigate = useNavigate(); // Get the navigation function using useNavigate
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate(); 
 
   // Function to delete a course by ID
   const handleDeleteCourse = async (courseId) => {
@@ -31,6 +32,23 @@ function Courses() {
     navigate(`/update-course/${courseId}`);
   }
 
+  const handleSearch = async () => {
+    try {
+      if (searchTerm.trim() === '') {
+        // If search term is empty, fetch all courses
+        const allCourses = await fetchCourses();
+        setCourseData(allCourses);
+      } else {
+        // If there's a search term, perform the search
+        const searchResults = await fetchCourses(searchTerm);
+        setCourseData(searchResults);
+      }
+    } catch (error) {
+      console.error('Error searching for courses:', error);
+    }
+  };
+  
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -53,6 +71,18 @@ function Courses() {
        <div className="container">
          <div className="row">
            <div className="col">
+           <div className="col search-bar-container">
+            <input
+              type="text"
+              className="search-bar"
+              placeholder="Search courses..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button className="search-button" onClick={handleSearch}>
+              Search
+            </button>
+            </div>
              <div className="jumbotron">
                <h1 className="display-4">Learning Management System</h1>
              </div>
@@ -72,78 +102,3 @@ function Courses() {
 }
 
 export default Courses;
-
-
-// // Courses.js
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import CourseList from '../components/CourseList';
-// import { fetchCourses, deleteCourse, updateCourse } from '../APIs/apiCourseService';
-
-// function Courses() {
-//   const [courseData, setCourseData] = useState([]);
-
-// // Function to delete a course by ID
-// const handleDeleteCourse = async (courseId) => {
-//   try {
-//     const response = await deleteCourse(courseId);
-//     if (response.status === 204) {
-//       // Course deleted successfully, update the course list
-//       const updatedCourses = courseData.filter((course) => course.id !== courseId);
-//       setCourseData(updatedCourses);
-//     } else {
-//       // Handle deletion failure
-//       console.error('Failed to delete the course.');
-//     }
-//   } catch (error) {
-//     // Handle network or unexpected errors
-//     console.error('Error deleting the course:', error);
-//   }
-// }
-  
-//   const handleUpdateCourse = (courseId) => {
-//     // Navigate to the update course page with the courseId in the URL
-//     navigate(`/update-course/${courseId}`);
-//   }
-
-//   useEffect(() => {
-//     async function fetchData() {
-//       try {
-//         const courses = await fetchCourses();
-//         const transformedData = courses.map((course) => ({
-//           id: course.id,
-//           title: course.courseName,
-//         }));
-//         setCourseData(transformedData);
-//       } catch (error) {
-//         console.error('Error fetching courses:', error);
-//       }
-//     }
-
-//     fetchData();
-//   }, []);
-
-//   return (
-//     <div>
-//        <div className="container">
-//          <div className="row">
-//            <div className="col">
-//              <div className="jumbotron">
-//                <h1 className="display-4">Learning Management System</h1>
-//              </div>
-//            </div>
-//          </div>
-//     </div>
-
-//       <div className="container">
-//         <CourseList
-//           courses={courseData}
-//           onUpdateClick={handleUpdateCourse}
-//           onDeleteClick={handleDeleteCourse}
-//         />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Courses;

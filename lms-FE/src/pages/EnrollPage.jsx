@@ -16,8 +16,8 @@ function EnrollCourse() {
       try {
         const confirmed = window.confirm('Are you sure you want to enroll in this course?');
         if (confirmed) {
-          const response = await enrollInCourse.enrollInCourse(userId, courseId);
-          
+          const response = await enrollInCourse(userId, courseId);
+
           if (response.enrollmentId) {
             setEnrollmentStatus('success');
           } else {

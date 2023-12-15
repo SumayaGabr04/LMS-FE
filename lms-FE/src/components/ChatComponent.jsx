@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import apiChat from '../APIs/apiChat';
-import AccessTokenProvider from '../components/AccessTokenProvider';
+import { useEffect, useState } from 'react';
 
 const ChatComponent = ({ loggedInUser, recipients }) => {
   const [messages, setMessages] = useState([]);
@@ -9,15 +7,10 @@ const ChatComponent = ({ loggedInUser, recipients }) => {
   const [socket, setSocket] = useState(null);
 
   const handleSendMessage = async () => {
-    // Ensure AccessTokenProvider.setAccessToken is called before this point
     if (content.trim() !== '' && selectedRecipient && socket && socket.readyState === WebSocket.OPEN) {
       try {
-        const accessToken = AccessTokenProvider.getAccessToken();
-        console.log('Access Token before WebSocket API call:', accessToken);
-
         const message = { content, sender: loggedInUser, recipient: selectedRecipient };
         socket.send(JSON.stringify({ type: 'CHAT', message }));
-
         setContent('');
       } catch (error) {
         console.error('Error sending message:', error);
@@ -30,38 +23,37 @@ const ChatComponent = ({ loggedInUser, recipients }) => {
   };
 
   useEffect(() => {
-    const newSocket = new WebSocket(`ws://localhost:8080/ws`);
-  
-    newSocket.onopen = () => {
-      const accessToken = AccessTokenProvider.getAccessToken();
-      console.log('WebSocket opened successfully.');
-      console.log('Access Token before WebSocket API call:', accessToken);
-      newSocket.send(JSON.stringify({ type: 'AUTH', accessToken }));
-    };
-  
-    newSocket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log('Received message:', message);
-      setMessages((prevMessages) => [...prevMessages, message]);
-    };
-  
-    newSocket.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
-  
-    newSocket.onclose = (event) => {
-      console.error('WebSocket closed unexpectedly:', event);
-      // You can handle the closure and attempt to reconnect if needed
-    };
-  
-    setSocket(newSocket);
-  
-    return () => {
-      newSocket.close();
-    };
-  }, []);
+    if (!socket) {
+      const newSocket = new WebSocket(`ws://localhost:8080/ws`);
 
-  
+      newSocket.onopen = () => {
+        console.log('WebSocket opened successfully.');
+        // You can send additional setup messages here if needed
+      };
+
+      newSocket.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        console.log('Received message:', message);
+        setMessages((prevMessages) => [...prevMessages, message]);
+      };
+
+      newSocket.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+
+      newSocket.onclose = (event) => {
+        console.error('WebSocket closed unexpectedly:', event);
+        // You can handle the closure and attempt to reconnect if needed
+      };
+
+      setSocket(newSocket);
+
+      return () => {
+        newSocket.close();
+      };
+    }
+  }, [socket]);
+
   return (
     <div>
       <div>

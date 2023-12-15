@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AccessTokenProvider from './AccessTokenProvider';
 
-function CourseItem({ course, onUpdateClick, onDeleteClick, claims }) {
+function CourseItem({ course, onUpdateClick, onDeleteClick, onMaterialUploadClick, claims }) {
   const navigate = useNavigate();
 
   const handleViewCourse = () => {
@@ -33,6 +33,10 @@ function CourseItem({ course, onUpdateClick, onDeleteClick, claims }) {
     }
   };
 
+  const handleMaterialUpload = () => {
+    onMaterialUploadClick(course.id);
+  };
+
   const userRole = AccessTokenProvider.getUserRole();
 
   return (
@@ -54,6 +58,11 @@ function CourseItem({ course, onUpdateClick, onDeleteClick, claims }) {
       {userRole.includes('STUDENT') && (
         <button className="enroll-button" onClick={handleEnrollCourse}>
           Enroll
+        </button>
+      )}
+         {userRole.includes('TEACHER') && (
+          <button className="material-upload-button" onClick={handleMaterialUpload}>
+          Upload Material
         </button>
       )}
     </div>

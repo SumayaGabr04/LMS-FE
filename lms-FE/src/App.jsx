@@ -14,6 +14,7 @@ import UpdateCourse from './pages/UpdateCourse';
 import EnrollCourse from './pages/EnrollPage';
 import ProfilePage from './pages/ProfilePage';
 import ChatPage from './pages/ChatPage';
+import MaterialUploadPage from './pages/MaterialUploadPage';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/material-upload/:courseId" element={<MaterialUploadPage />} />
           </Routes>
           {/* <Footer /> */}
         </Router>

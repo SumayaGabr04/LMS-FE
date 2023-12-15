@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ChatComponent from '../components/ChatComponent';
 import apiUsers from '../APIs/apiUsers';
+import ChatComponent from '../components/ChatComponent';
 import AccessTokenProvider from '../components/AccessTokenProvider';
 
 const ChatPage = () => {

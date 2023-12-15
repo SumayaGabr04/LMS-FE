@@ -47,6 +47,10 @@ function Courses() {
       console.error('Error searching for courses:', error);
     }
   };
+
+  const handleMaterialUpload = (courseId) => {
+    navigate(`/material-upload/${courseId}`);
+  };
   
 
   useEffect(() => {
@@ -95,6 +99,7 @@ function Courses() {
         courses={courseData}
         onUpdateClick={handleUpdateCourse}
         onDeleteClick={handleDeleteCourse}
+        onMaterialUploadClick={handleMaterialUpload}
       />
     </div>
   </div>

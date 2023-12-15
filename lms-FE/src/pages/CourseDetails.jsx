@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { fetchCourseDetails } from '../APIs/apiCourseService';
+import MaterialApi from '../APIs/MaterialApi';
+
 
 function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -32,6 +37,34 @@ function CourseDetails() {
     fetchData();
   }, [id]);
 
+  const handleDownload = async (materialId, materialName) => {
+    try {
+      setLoading(true);
+      const materialData = await MaterialApi.downloadMaterial(materialId);
+
+      // Create a blob from the response data
+      const blob = new Blob([materialData]);
+
+      // Create a link element to trigger the download
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = materialName;
+
+      // Append the link to the body and trigger the download
+      document.body.appendChild(link);
+      link.click();
+
+      // Remove the link from the body
+      document.body.removeChild(link);
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Error downloading material:', error);
+      setError('Failed to download material');
+      setLoading(false);
+    }
+  };
+
   if (!course) {
     return <div>Loading...</div>;
   }
@@ -54,13 +87,23 @@ function CourseDetails() {
         </ul>
       </div>
 
-      {/* Display course materials */}
+      {/* Display course materials with download links */}
       <div>
         <h2>Course Materials:</h2>
         <ul>
-          {course.courseMaterials.map(material => (
-            <li key={material.id}>{material.material}</li>
-          ))}
+        {course.courseMaterials.map((material) => (
+  <li key={material.id}>
+    {material.title} {/* Display the title */}
+    {' '}
+    <button
+      className="btn btn-primary btn-sm"
+      onClick={() => handleDownload(material.id, material.title)} 
+    >
+      Download
+    </button>
+  </li>
+))}
+
         </ul>
       </div>
     </div>

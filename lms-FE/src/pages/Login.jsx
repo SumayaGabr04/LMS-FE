@@ -18,12 +18,11 @@ function Login() {
 
   apiAuth.login(username, password)
   .then(claims => {
-    console.log("Login successful. Claims:", claims);
     setClaims(claims);
+    window.location.reload();
     navigate('/');
   })
   .catch(error => {
-    console.error("Login failed:", error);
     alert("Login failed!");
   });
 }
@@ -31,6 +30,7 @@ function Login() {
   const handleLogout = () => {
     AccessTokenProvider.clear();
     setClaims(null);
+    window.location.reload();
   }
 
   useEffect(() => {

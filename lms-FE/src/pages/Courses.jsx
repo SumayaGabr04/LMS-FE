@@ -25,6 +25,7 @@ function Courses() {
       // Handle network or unexpected errors
       console.error('Error deleting the course:', error);
     }
+    window.location.reload();
   }
   
   const handleUpdateCourse = (courseId) => {

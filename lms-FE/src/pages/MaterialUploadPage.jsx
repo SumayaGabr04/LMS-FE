@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const MaterialUploadPage = () => {
   const [successMessage, setSuccessMessage] = useState(null);
 
-  const handleUploadSuccess = (message) => {
+  const handleUploadSuccess = (message) => {z
     setSuccessMessage(message);
   };
 

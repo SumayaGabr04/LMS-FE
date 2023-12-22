@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { fetchCourseDetails } from '../APIs/apiCourseService';
 import MaterialApi from '../APIs/MaterialApi';
 
-
 function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
@@ -70,19 +69,20 @@ function CourseDetails() {
   }
 
   return (
-    <div className="course-detail">
-      <h1>{course.courseName}</h1>
-      <p>Description: {course.description}</p>
-      <p>Instructor: {course.instructor}</p>
-      <p>Enrollment Capacity: {course.enrollmentCapacity}</p>
-      <p>Start Date: {course.startDate}</p>
-      <p>End Date: {course.endDate}</p>
-     {/* Display enrolled students */}
-     <div>
+    <div className="container mt-4">
+      <h1 className="mb-4">{course.courseName}</h1>
+      <p><strong>Description:</strong> {course.description}</p>
+      <p><strong>Instructor:</strong> {course.instructor}</p>
+      <p><strong>Enrollment Capacity:</strong> {course.enrollmentCapacity}</p>
+      <p><strong>Start Date:</strong> {course.startDate}</p>
+      <p><strong>End Date:</strong> {course.endDate}</p>
+
+      {/* Display enrolled students */}
+      <div className="mb-4">
         <h2>Enrolled Students:</h2>
-        <ul>
+        <ul className="list-group">
           {course.enrolledStudents.map(student => (
-            <li key={student.id}>{student.name}</li>
+            <li key={student.id} className="list-group-item">{student.name}</li>
           ))}
         </ul>
       </div>
@@ -90,20 +90,19 @@ function CourseDetails() {
       {/* Display course materials with download links */}
       <div>
         <h2>Course Materials:</h2>
-        <ul>
-        {course.courseMaterials.map((material) => (
-  <li key={material.id}>
-    {material.title} {/* Display the title */}
-    {' '}
-    <button
-      className="btn btn-primary btn-sm"
-      onClick={() => handleDownload(material.id, material.title)} 
-    >
-      Download
-    </button>
-  </li>
-))}
-
+        <ul className="list-group">
+          {course.courseMaterials.map((material) => (
+            <li key={material.id} className="list-group-item d-flex justify-content-between align-items-center">
+              {material.title}
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => handleDownload(material.id, material.title)} 
+                disabled={loading}
+              >
+                {loading ? 'Downloading...' : 'Download'}
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

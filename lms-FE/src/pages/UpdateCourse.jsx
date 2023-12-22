@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { fetchCourseDetails, updateCourse } from '../APIs/apiCourseService';
 
@@ -17,6 +18,7 @@ function UpdateCourse() {
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchCourse() {
@@ -49,6 +51,7 @@ function UpdateCourse() {
       if (response.status === 'success') {
         setSuccess(true);
         setError(null);
+        navigate('/courses');
         setTimeout(() => {
           setSuccess(false);
         }, 3000);

@@ -77,3 +77,22 @@ export const deleteCourse = async (courseId) => {
     throw new Error(ErrorHandlingService.handleError(error));
   }
 };
+
+// Function to fetch top 3 courses with most enrolled students
+export const fetchTop3Courses = async () => {
+  try {
+    const response = await createAuthorizedInstance().get('/courses/top3enrolled');
+    console.log('Top 3 Courses Response:', response);
+
+    if (response.status === 200 && response.data && response.data.topCourses) {
+      return response.data.topCourses;
+    }
+
+    throw new Error('Invalid response format for top 3 courses');
+  } catch (error) {
+    console.error('Error in fetchTop3Courses:', error);
+    throw new Error(error.message);
+  }
+};
+
+

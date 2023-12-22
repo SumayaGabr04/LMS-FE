@@ -25,6 +25,7 @@ function NavBar() {
       show: userRole && userRole.includes("ADMIN") && isLoggedIn,
     },
     { id: 6, path: "/chat", text: "Chat", show: isLoggedIn },
+    { id: 7, path: "/top-courses", text: "Top Courses", show: isLoggedIn },
   ];
 
   return (

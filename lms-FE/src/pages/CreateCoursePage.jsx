@@ -24,16 +24,22 @@ function CreateCourse() {
     e.preventDefault();
     try {
       const response = await createCourse(courseData);
-      console.log('Response from backend:', response);
+
   
       if (response.status === 'success') {
         // Handle success
         setSuccess(true);
         setError(null);
-        // Hide the success message after 3 seconds
-        setTimeout(() => {
-          setSuccess(false);
-        }, 3000);
+        setCourseData({
+          id: '',
+          courseName: '',
+          description: '',
+          instructor: '',
+          enrollmentCapacity: 0,
+          startDate: '',
+          endDate: '',
+        });
+        alert("Course Created");
       } else if (response.errorMessages && response.errorMessages.length > 0) {
         // Handle server response errors
         setSuccess(false);

@@ -11,7 +11,8 @@ const apiChat = {
       console.log('Access Token:', AccessTokenProvider.getAccessToken());
 
       
-      const response = await authorizedInstance.post('/app/chat', message);
+      const response = await authorizedInstance.post('/app/chat.sendMessage', message);
+
       return response.data;
     } catch (error) {
       console.error('Error sending message:', error);

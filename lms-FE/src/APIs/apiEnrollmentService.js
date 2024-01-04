@@ -35,3 +35,16 @@ export const getEnrollmentsForStudent = async (studentId) => {
     }
   }
 };
+
+export const dropOutFromCourse = async (enrollmentId) => {
+  try {
+    const response = await createAuthorizedInstance().delete(`/enrollments/${enrollmentId}`);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.errorMessages) {
+      throw error.response.data;
+    } else {
+      throw error;
+    }
+  }
+};

@@ -11,20 +11,19 @@ const ChatComponent = ({ loggedInUser, recipients }) => {
   const [userData, setUserData] = useState({
     username: '',
     connected: false,
-    message: ''
+    message: '',
+    fullName: '', // Declare fullName in the component state
   });
-  
-  const fullName = `${userData.firstName} ${userData.lastName}`;
+
   useEffect(() => {
     const fetchLoggedInUser = async () => {
       try {
-        const loggedInUser = await apiUsers.getLoggedInUser();
-  
-        if (loggedInUser) {
-          console.log('Logged-in user details:', loggedInUser);
-          const { firstName, lastName } = loggedInUser;
+        const loggedInUserResponse = await apiUsers.getLoggedInUser();
+
+        if (loggedInUserResponse && loggedInUserResponse.user) {
+          const { firstName, lastName } = loggedInUserResponse.user;
           const fullName = `${firstName} ${lastName}`;
-          setUserData(prevUserData => ({ ...prevUserData, username: fullName }));
+          setUserData((prevUserData) => ({ ...prevUserData, username: fullName, fullName }));
         } else {
           console.log('User not logged in');
         }
@@ -32,34 +31,31 @@ const ChatComponent = ({ loggedInUser, recipients }) => {
         console.error('Error fetching logged-in user:', error);
       }
     };
-  
+
     fetchLoggedInUser();
-  }, []); // Run only once on mount
-  
-  
+  }, []);
 
   const connect = () => {
     let Sock = new SockJS('http://localhost:8080/ws');
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
-  }
+  };
 
   const onConnected = () => {
     console.log('Connected to WebSocket');
-    setUserData({ ...userData, connected: true });
+    setUserData((prevUserData) => ({ ...prevUserData, connected: true }));
     stompClient.subscribe(`/chatroom/public`, onMessageReceived);
     stompClient.subscribe(`/chatroom/members`, onMembersListReceived);
     userJoin();
-  }
-
-const userJoin = () => {
-  var chatMessage = {
-    senderName: fullName, // Use fullName instead of userData.username
-    status: "JOIN"
   };
-  stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-};
 
+  const userJoin = () => {
+    var chatMessage = {
+      senderName: userData.fullName, // Use userData.fullName instead of fullName
+      status: 'JOIN',
+    };
+    stompClient.send('/app/message', {}, JSON.stringify(chatMessage));
+  };
 
   const onMessageReceived = (payload) => {
     var payloadData = JSON.parse(payload.body);

@@ -73,38 +73,38 @@ function Courses() {
 
   return (
     <div>
-       <div className="container">
-         <div className="row">
-           <div className="col">
-           <div className="col search-bar-container">
-            <input
-              type="text"
-              className="search-bar"
-              placeholder="Search courses..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button className="search-button" onClick={handleSearch}>
-              Search
-            </button>
+      <div className="container">
+        <div className="row">
+          <div className="col">
+            <div className="col search-bar-container">
+              <input
+                type="text"
+                className="search-bar"
+                placeholder="Search courses..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button className="search-button" onClick={handleSearch}>
+                Search
+              </button>
             </div>
-             <div className="jumbotron">
-               <h1 className="display-4">Learning Management System</h1>
-             </div>
-           </div>
-         </div>
+            <div className="jumbotron">
+              <h1 className="display-4">Learning Management System</h1>
+            </div>
+          </div>
+        </div>
+        <div className="container">
+          <CourseList
+            courses={courseData}
+            onUpdateClick={handleUpdateCourse}
+            onDeleteClick={handleDeleteCourse}
+            onMaterialUploadClick={handleMaterialUpload}
+          />
+        </div>
+      </div>
     </div>
-
-    <div className="container">
-      <CourseList
-        courses={courseData}
-        onUpdateClick={handleUpdateCourse}
-        onDeleteClick={handleDeleteCourse}
-        onMaterialUploadClick={handleMaterialUpload}
-      />
-    </div>
-  </div>
   );
+  
 }
 
 export default Courses;

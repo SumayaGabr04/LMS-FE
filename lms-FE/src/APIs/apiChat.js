@@ -1,24 +1,36 @@
-import axios from 'axios';
+import { Stomp } from '@stomp/stompjs';
+import SockJS from 'sockjs-client/dist/sockjs.min.js';
 import createAuthorizedInstance from './createAuthorizedInstance';
 
 const BASE_URL = 'http://localhost:8080';
+const websocketEndpoint = `${BASE_URL}/ws`;
+const stompClient = Stomp.over(new SockJS(websocketEndpoint));
 
-const apiChat = {
-  sendMessage: async (message) => {
-    try {
-      const authorizedInstance = createAuthorizedInstance();
-      console.log('Request Headers:', authorizedInstance.defaults.headers);
-      console.log('Access Token:', AccessTokenProvider.getAccessToken());
+const connectToWebSocket = () => {
+  const authorizedInstance = createAuthorizedInstance();
+  const stompInstance = Stomp.over(new SockJS(websocketEndpoint));
 
-      
-      const response = await authorizedInstance.post('/app/chat.sendMessage', message);
-
-      return response.data;
-    } catch (error) {
-      console.error('Error sending message:', error);
-      throw error;
+  // Fix: Pass headers directly to the connect function
+  stompInstance.connect(
+    { Authorization: `Bearer ${authorizedInstance.defaults.headers.common.Authorization}` },
+    () => {
+      console.log('Connected to WebSocket');
+      // Additional logic after connecting to WebSocket
+    },
+    (error) => {
+      console.error('Error connecting to WebSocket:', error);
     }
-  },
+  );
+
+  // Add an error callback
+  stompInstance.onWebSocketError = (event) => {
+    console.error('WebSocket error:', event);
+  };
+
+  return stompInstance;
 };
 
-export default apiChat;
+
+
+
+export { connectToWebSocket };

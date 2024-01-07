@@ -1,86 +1,157 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { over } from 'stompjs';
+import SockJS from 'sockjs-client/dist/sockjs.min.js';
+import apiUsers from '../APIs/apiUsers';
+
+var stompClient = null;
 
 const ChatComponent = ({ loggedInUser, recipients }) => {
-  const [messages, setMessages] = useState([]);
-  const [content, setContent] = useState('');
-  const [selectedRecipient, setSelectedRecipient] = useState('');
-  const [socket, setSocket] = useState(null);
-
-  const handleSendMessage = async () => {
-    if (content.trim() !== '' && selectedRecipient && socket && socket.readyState === WebSocket.OPEN) {
-      try {
-        const message = { content, sender: loggedInUser, recipient: selectedRecipient };
-        socket.send(JSON.stringify({ type: 'CHAT', message }));
-        setContent('');
-      } catch (error) {
-        console.error('Error sending message:', error);
-      }
-    }
-  };
-
-  const handleRecipientChange = (event) => {
-    setSelectedRecipient(event.target.value);
-  };
-
+  const [publicChats, setPublicChats] = useState([]);
+  const [membersList, setMembersList] = useState([]);
+  const [userData, setUserData] = useState({
+    username: '',
+    connected: false,
+    message: ''
+  });
+  
+  const fullName = `${userData.firstName} ${userData.lastName}`;
   useEffect(() => {
-    if (!socket) {
-      const newSocket = new WebSocket(`ws://localhost:8080/ws`);
+    const fetchLoggedInUser = async () => {
+      try {
+        const loggedInUser = await apiUsers.getLoggedInUser();
+  
+        if (loggedInUser) {
+          console.log('Logged-in user details:', loggedInUser);
+          const { firstName, lastName } = loggedInUser;
+          const fullName = `${firstName} ${lastName}`;
+          setUserData(prevUserData => ({ ...prevUserData, username: fullName }));
+        } else {
+          console.log('User not logged in');
+        }
+      } catch (error) {
+        console.error('Error fetching logged-in user:', error);
+      }
+    };
+  
+    fetchLoggedInUser();
+  }, []); // Run only once on mount
+  
+  
 
-      newSocket.onopen = () => {
-        console.log('WebSocket opened successfully.');
-        // You can send additional setup messages here if needed
-      };
+  const connect = () => {
+    let Sock = new SockJS('http://localhost:8080/ws');
+    stompClient = over(Sock);
+    stompClient.connect({}, onConnected, onError);
+  }
 
-      newSocket.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-        console.log('Received message:', message);
-        setMessages((prevMessages) => [...prevMessages, message]);
-      };
+  const onConnected = () => {
+    console.log('Connected to WebSocket');
+    setUserData({ ...userData, connected: true });
+    stompClient.subscribe(`/chatroom/public`, onMessageReceived);
+    stompClient.subscribe(`/chatroom/members`, onMembersListReceived);
+    userJoin();
+  }
 
-      newSocket.onerror = (error) => {
-        console.error('WebSocket error:', error);
-      };
+const userJoin = () => {
+  var chatMessage = {
+    senderName: fullName, // Use fullName instead of userData.username
+    status: "JOIN"
+  };
+  stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+};
 
-      newSocket.onclose = (event) => {
-        console.error('WebSocket closed unexpectedly:', event);
-        // You can handle the closure and attempt to reconnect if needed
-      };
 
-      setSocket(newSocket);
-
-      return () => {
-        newSocket.close();
-      };
+  const onMessageReceived = (payload) => {
+    var payloadData = JSON.parse(payload.body);
+    switch (payloadData.status) {
+      case "JOIN":
+        if (payloadData.members) {
+          setMembersList(payloadData.members);
+        }
+        break;
+      case "MESSAGE":
+        setPublicChats(prevPublicChats => [...prevPublicChats, payloadData]);
+        break;
+      default:
+        console.error("Unknown status:", payloadData.status);
     }
-  }, [socket]);
+  }  
+
+  const onMembersListReceived = (payload) => {
+    var membersData = JSON.parse(payload.body);
+    setMembersList(membersData.members);
+  }
+
+  const onError = (err) => {
+    console.log(err);
+  }
+
+  const handleMessage = (event) => {
+    const { value } = event.target;
+    setUserData({ ...userData, message: value });
+  };
+
+  const sendValue = () => {
+    if (stompClient && userData.username && userData.message) {
+      var chatMessage = {
+        senderName: userData.username,
+        message: userData.message,
+        status: "MESSAGE",
+      };
+      console.log("Sending public message:", chatMessage);
+      stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+      setUserData({ ...userData, message: "" });
+    }
+  };
+
+  const handleUsername = (event) => {
+    const { value } = event.target;
+    console.log("Username:", value);
+    setUserData({ ...userData, username: value });
+  }
+
+  const registerUser = () => {
+    connect();
+  }
 
   return (
-    <div>
-      <div>
-        {messages.map((message, index) => (
-          <div key={index}>
-            <strong>{message.sender.username}: </strong> {message.content}
+    <div className="container-chat">
+      {userData.connected ? (
+        <div className="chat-box">
+          {/* <div className="member-list">
+            <h2>Members</h2>
+            <ul>
+              {membersList.map((member, index) => (
+                <li key={index}>{member}</li>
+              ))}
+            </ul>
+          </div> */}
+          <div className="chat-content">
+            <ul className="chat-messages">
+              {publicChats.map((chat, index) => (
+                <li className={`message ${chat.senderName === userData.username && "self"}`} key={index}>
+                  <div className="message-data">
+                    <div className="sender-name">{chat.senderName}</div>
+                  </div>
+                  <div className="message-text">{chat.message}</div>
+                </li>
+              ))}
+            </ul>
+            <div className="send-message">
+              <input type="text" className="input-message" placeholder="Enter the message" value={userData.message} onChange={handleMessage} />
+              <button type="button" className="send-button" onClick={sendValue}>Send</button>
+            </div>
           </div>
-        ))}
-      </div>
-      <div>
-        <select value={selectedRecipient} onChange={handleRecipientChange}>
-          {recipients.map((recipient) => (
-            <option key={recipient.id} value={recipient.id}>
-              {recipient.name}
-            </option>
-          ))}
-        </select>
-        <input
-          type="text"
-          placeholder="Type your message..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <button onClick={handleSendMessage}>Send</button>
-      </div>
+        </div>
+      ) : (
+        <div className="register">
+          <button type="button" onClick={registerUser}>
+            Connect
+          </button>
+        </div>
+      )}
     </div>
   );
-};
+}
 
 export default ChatComponent;

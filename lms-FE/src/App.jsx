@@ -1,6 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router, Navigate } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
@@ -16,8 +16,28 @@ import ProfilePage from './pages/ProfilePage';
 import ChatPage from './pages/ChatPage';
 import MaterialUploadPage from './pages/MaterialUploadPage';
 import Top3Courses from './pages/TopCourses';
+import { connectToWebSocket } from './APIs/apiChat';
+
 
 function App() {
+
+  const [socket, setSocket] = useState(null);
+  const [claims, setClaims] = useState(null);
+
+  useEffect(() => {
+    // Your existing code to connect to WebSocket
+    const newSocket = connectToWebSocket();
+    setSocket(newSocket);
+  
+    return () => {
+      if (newSocket) {
+        newSocket.disconnect(); // Disconnect the WebSocket when the component unmounts
+      }
+    };
+  }, []);
+  
+  
+
   return (
       <div className="App">
         <Router>

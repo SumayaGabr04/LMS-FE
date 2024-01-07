@@ -73,19 +73,11 @@ function CourseDetails() {
       <h1 className="mb-4">{course.courseName}</h1>
       <p><strong>Description:</strong> {course.description}</p>
       <p><strong>Instructor:</strong> {course.instructor}</p>
-      <p><strong>Enrollment Capacity:</strong> {course.enrollmentCapacity}</p>
+
       <p><strong>Start Date:</strong> {course.startDate}</p>
       <p><strong>End Date:</strong> {course.endDate}</p>
 
-      {/* Display enrolled students */}
-      <div className="mb-4">
-        <h2>Enrolled Students:</h2>
-        <ul className="list-group">
-          {course.enrolledStudents.map(student => (
-            <li key={student.id} className="list-group-item">{student.name}</li>
-          ))}
-        </ul>
-      </div>
+
 
       {/* Display course materials with download links */}
       <div>

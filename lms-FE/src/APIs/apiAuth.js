@@ -12,7 +12,7 @@ const apiAuth = {
       .then(response => {
         const accessToken = response.data.accessToken;
         AccessTokenProvider.setAccessToken(accessToken);
-        console.log('Login Successful. Access Token:', accessToken);
+        // console.log('Login Successful. Access Token:', accessToken);
         return accessToken;
       })
       .catch(error => {

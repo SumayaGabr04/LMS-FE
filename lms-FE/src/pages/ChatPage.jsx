@@ -1,3 +1,4 @@
+// ChatPage.jsx
 import React, { useState, useEffect } from 'react';
 import apiUsers from '../APIs/apiUsers';
 import ChatComponent from '../components/ChatComponent';
@@ -37,6 +38,7 @@ const ChatPage = () => {
   return (
     <div>
       <h1>Chat Page</h1>
+      {/* Pass the entire loggedInUser object to the ChatComponent */}
       <ChatComponent loggedInUser={loggedInUser} recipients={recipients} />
     </div>
   );

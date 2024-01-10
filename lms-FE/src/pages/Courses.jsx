@@ -41,8 +41,10 @@ function Courses() {
         setCourseData(allCourses);
       } else {
         // If there's a search term, perform the search
-        const searchResults = await fetchCourses(searchTerm);
-        setCourseData(searchResults);
+        const searchResults = courseData.filter((course) =>
+        course.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setCourseData(searchResults);
       }
     } catch (error) {
       console.error('Error searching for courses:', error);

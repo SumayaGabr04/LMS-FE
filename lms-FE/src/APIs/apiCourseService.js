@@ -94,5 +94,3 @@ export const fetchTop3Courses = async () => {
     throw new Error(error.message);
   }
 };
-
-

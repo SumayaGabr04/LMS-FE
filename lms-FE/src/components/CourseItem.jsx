@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AccessTokenProvider from './AccessTokenProvider';
+import { enrollInCourse } from '../APIs/apiEnrollmentService';
 
 function CourseItem({ course, onUpdateClick, onDeleteClick, onMaterialUploadClick, claims }) {
   const navigate = useNavigate();
@@ -20,18 +21,33 @@ function CourseItem({ course, onUpdateClick, onDeleteClick, onMaterialUploadClic
     }
   };
 
-  const handleEnrollCourse = () => {
+  const handleEnrollCourse = async () => {
     const userId = AccessTokenProvider.getUserId();
 
     if (userId) {
-      const confirmed = window.confirm('Are you sure you want to enroll in this course?');
-      if (confirmed) {
-        navigate(`/enroll-course/${userId}/${course.id}`);
+      try {
+        const confirmed = window.confirm('Are you sure you want to enroll in this course?');
+        if (confirmed) {
+          // Call the enrollInCourse API function
+          const response = await enrollInCourse(userId, course.id);
+
+          if (response.enrollmentId) {
+            alert('Enrollment successful!');
+            navigate(`/profile`);
+            // You can also perform additional actions if needed
+          } else {
+            alert('Failed to enroll. Please try again.');
+          }
+        }
+      } catch (error) {
+        console.error('Error enrolling in the course:', error);
+        alert('Failed to enroll. Please try again.');
       }
     } else {
       console.error('User ID is missing');
     }
   };
+
 
   const handleMaterialUpload = () => {
     onMaterialUploadClick(course.id);

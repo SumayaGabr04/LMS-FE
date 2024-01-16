@@ -11,7 +11,6 @@ import Login from './pages/Login';
 import CourseDetails from './pages/CourseDetails';
 import CreateCourse from './pages/CreateCoursePage';
 import UpdateCourse from './pages/UpdateCourse';
-import EnrollCourse from './pages/EnrollPage';
 import ProfilePage from './pages/ProfilePage';
 import ChatPage from './pages/ChatPage';
 import MaterialUploadPage from './pages/MaterialUploadPage';
@@ -49,7 +48,6 @@ function App() {
             <Route path="/courses/:id" element={<CourseDetails />} />
             <Route path="/create-course" element={<CreateCourse />} />
             <Route path="/update-course/:id" element={<UpdateCourse />} />
-            <Route path="/enroll-course/:id/:courseId" element={<EnrollCourse />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<ProfilePage />} />

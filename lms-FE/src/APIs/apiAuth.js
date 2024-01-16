@@ -8,7 +8,7 @@ import AccessTokenProvider from "../components/AccessTokenProvider";
 // }
 
 const apiAuth = {
-  login: (email, password) => axios.post('http://localhost:8080/tokens', { email, password })
+  login: (email, password) => axios.post('http://localhost:8090/tokens', { email, password })
       .then(response => {
         const accessToken = response.data.accessToken;
         AccessTokenProvider.setAccessToken(accessToken);

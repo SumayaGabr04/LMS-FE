@@ -1,6 +1,6 @@
 import createAuthorizedInstance from '../APIs/createAuthorizedInstance'; 
 
-const BASE_URL = 'http://localhost:8080/material';
+const BASE_URL = 'http://localhost:8090/material';
 const materialApiInstance = createAuthorizedInstance();
 
 const MaterialApi = {

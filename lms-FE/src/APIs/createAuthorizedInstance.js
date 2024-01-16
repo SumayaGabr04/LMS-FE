@@ -2,7 +2,7 @@ import axios from "axios";
 import AccessTokenProvider from '../components/AccessTokenProvider';
 
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://localhost:8090';
 
 const createAuthorizedInstance = () => {
   const instance = axios.create({

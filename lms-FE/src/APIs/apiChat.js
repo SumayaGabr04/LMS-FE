@@ -2,7 +2,7 @@ import { Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client/dist/sockjs.min.js';
 import createAuthorizedInstance from './createAuthorizedInstance';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://localhost:8090';
 const websocketEndpoint = `${BASE_URL}/ws`;
 const stompClient = Stomp.over(new SockJS(websocketEndpoint));
 

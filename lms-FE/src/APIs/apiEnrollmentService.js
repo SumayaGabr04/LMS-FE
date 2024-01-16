@@ -2,7 +2,7 @@
 import axios from 'axios';
 import createAuthorizedInstance from './createAuthorizedInstance';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://localhost:8090';
 
 export const enrollInCourse = async (studentId, courseId) => {
   try {

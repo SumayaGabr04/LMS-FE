@@ -2,7 +2,7 @@ import axios from 'axios';
 import ErrorHandlingService from '../components/errorHandling/ErrorHandlingService';
 import createAuthorizedInstance from './createAuthorizedInstance';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://localhost:8090';
 
 // Function to fetch courses with optional search term
 export const fetchCourses = async (searchTerm = '') => {

@@ -535,3 +535,42 @@ ul {
 .message.self{
   justify-content: end;
 }
+
+/* CSS for the Welcome Section */
+.welcome-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.welcome-message {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.logout-button {
+  padding: 12px 20px;
+  background-color: #d9534f;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #c9302c;
+}
+
+.open-in-new-tab {
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.open-in-new-tab:hover {
+  color: #0056b3;
+}

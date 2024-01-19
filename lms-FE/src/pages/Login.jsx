@@ -42,13 +42,13 @@ function Login() {
       <div>
       <h1>My App</h1>
       {claims ? (
-        <div>
-          <p>Welcome, {claims.sub}</p>
-
-          <button onClick={handleLogout}>Logout</button>
-          <br />
-          <a href='/' target='_blank'>Open in new Tab</a>
-        </div>
+   <div className="welcome-container">
+   <p className="welcome-message">Welcome, {claims.sub}</p>
+   <button className="logout-button" onClick={handleLogout}>Logout</button>
+   <br />
+   <a className="open-in-new-tab" href='/' target='_blank'>Open in a new Tab</a>
+ </div>
+ 
       ) : (
         <LoginForm onLogin={handleLogin} />
       )}
